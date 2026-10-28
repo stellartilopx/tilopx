@@ -1,3 +1,25 @@
+window.siteLoading = (() => {
+    let overlay = document.querySelector(".loading-overlay");
+
+    function show() {
+        if (!overlay) overlay = document.querySelector(".loading-overlay");
+        if (!overlay) return;
+        overlay.hidden = false;
+        overlay.setAttribute("aria-hidden", "false");
+    }
+
+    function hide() {
+        if (!overlay) overlay = document.querySelector(".loading-overlay");
+        if (!overlay) return;
+        overlay.hidden = true;
+        overlay.setAttribute("aria-hidden", "true");
+    }
+
+    window.addEventListener("load", hide, { once: true });
+    window.addEventListener("pageshow", hide, { once: true });
+    return { show, hide };
+})();
+
 const viewer = document.querySelector(".viewer");
 
 if (viewer) {
@@ -11,12 +33,25 @@ if (viewer) {
     function showScreenshot(index) {
         currentIndex = (index + screenshotLinks.length) % screenshotLinks.length;
         const image = screenshotLinks[currentIndex].querySelector("img");
+        const loadingSpinner = viewer.querySelector(".viewer-loading");
 
-        viewerImage.src = image ? image.src : screenshotLinks[currentIndex].href;
+        loadingSpinner.hidden = false;
         viewerImage.alt = image ? image.alt : "Project screenshot";
+        viewerImage.src = image ? image.src : screenshotLinks[currentIndex].href;
     }
 
+    viewerImage.addEventListener("load", () => {
+        viewer.querySelector(".viewer-loading").hidden = true;
+        window.siteLoading.hide();
+    });
+
+    viewerImage.addEventListener("error", () => {
+        viewer.querySelector(".viewer-loading").hidden = true;
+        window.siteLoading.hide();
+    });
+
     function openViewer(index) {
+        window.siteLoading.show();
         showScreenshot(index);
         viewer.classList.add("show");
         viewer.setAttribute("aria-hidden", "false");

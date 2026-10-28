@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="loading-overlay" role="status" aria-live="polite" aria-label="Loading" hidden>
+        <span class="loading-spinner" aria-hidden="true"></span>
+    </div>
     <main class="projects-page">
         <a class="back-home" href="index.html">← Back to Home</a>
         <header class="projects-header">
@@ -56,6 +59,7 @@
     <div class="viewer" role="dialog" aria-modal="true" aria-label="Screenshot viewer" aria-hidden="true">
         <button class="close" type="button" aria-label="Close screenshot viewer">×</button>
         <button class="previous" type="button" aria-label="Previous screenshot">‹</button>
+        <span class="viewer-loading loading-spinner" aria-hidden="true" hidden></span>
         <img class="viewer-image" src="" alt="">
         <button class="next" type="button" aria-label="Next screenshot">›</button>
     </div>
